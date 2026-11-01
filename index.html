@@ -200,7 +200,7 @@ body{
 
     <div class="card">
       <h2>Ingresá tu nombre</h2>
-      <p class="explica">Escribí tu apellido y tu nombre como te salga: con mayúsculas o minúsculas, con o sin tildes, con todos tus nombres o solo uno. La app te encuentra igual.</p>
+      <p class="explica">Ingresá tu apellido y tu nombre. El sistema reconoce mayúsculas y minúsculas, tildes y nombres incompletos.</p>
       <div class="campo">
         <input type="text" id="nombre" autocomplete="name" autocapitalize="words" placeholder="Ej.: Juan Pérez" enterkeyhint="go">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -442,7 +442,7 @@ var ALUMNO=null;
 function mostrarCandidatos(hits){
   var box=$('cands');box.innerHTML='';
   var p=document.createElement('p');
-  p.textContent='Encontré varias personas. ¿Quién sos?';
+  p.textContent='Se encontró más de un estudiante. Seleccioná tu nombre:';
   box.appendChild(p);
   for(var i=0;i<hits.length&&i<6;i++){
     (function(h){
@@ -452,7 +452,7 @@ function mostrarCandidatos(hits){
       var nom=al.nombre;
       b.innerHTML='';
       var s1=document.createElement('span');s1.textContent=nom;b.appendChild(s1);
-      var s2=document.createElement('small');s2.textContent='Tocá para ver tus notas';b.appendChild(s2);
+      var s2=document.createElement('small');s2.textContent='Ver mis notas';b.appendChild(s2);
       b.onclick=function(){limpiaErr();entrar(al);};
       box.appendChild(b);
     })(hits[i]);
@@ -513,7 +513,7 @@ function pintar(me){
     var chip=document.createElement('div');chip.className='nota';
     if(nota==null){
       chip.className='nota vacia';chip.textContent=SIN_NOTA;
-      st.textContent='El docente todavía no cargó esta nota';
+      st.textContent='Nota aún no cargada';
       falta.push(lab+' — aún sin nota');
     }else if(n===0){
       chip.className='nota cero';chip.textContent='0';
