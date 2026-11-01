@@ -1,7 +1,8 @@
 /* Service worker — Mis notas 5050
-   Cachea la carcasa de la app para que abra rápido y pueda instalarse.
-   Las notas siempre se piden en vivo a la planilla (no se cachean). */
-var CACHE = 'notas5050-v1';
+   Estrategia red-primero: siempre intenta bajar la versión nueva y,
+   si no hay conexión, cae en la copia guardada. Así los cambios se ven
+   apenas se publican, sin quedar una versión vieja pegada. */
+var CACHE = 'notas5050-v2';
 var SHELL = [
   'index.html',
   'manifest.webmanifest',
@@ -36,13 +37,14 @@ self.addEventListener('fetch', function (e) {
     e.respondWith(fetch(e.request));
     return;
   }
+  /* red primero, cache como respaldo sin conexión */
   e.respondWith(
-    caches.match(e.request).then(function (r) {
-      return r || fetch(e.request).then(function (res) {
-        var copy = res.clone();
-        caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
-        return res;
-      });
+    fetch(e.request).then(function (res) {
+      var copy = res.clone();
+      caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
+      return res;
+    }).catch(function () {
+      return caches.match(e.request);
     })
   );
 });
