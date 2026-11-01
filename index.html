@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Mis notas · 5° TM · Colegio 5050</title>
+<meta name="description" content="Consultá tus notas del 3er trimestre · 5° año turno mañana · Colegio N° 5050, Vaqueros">
+<meta name="theme-color" content="#0891b2">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mis notas 5050">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --turq:#06b6d4; --turq2:#22d3ee; --turq3:#0891b2; --turq4:#155e75;
+  --azul:#2563eb; --azul2:#1d4ed8; --azul3:#1e3a8a; --cielo:#dbeafe; --hielo:#ecfeff;
+  --negro:#0f172a; --gris:#475569; --gris2:#94a3b8; --borde:#dbe7ee;
+  --ok:#0d9488; --warn:#b45309; --warnbg:#fef3c7; --alerta:#b91c1c; --alertabg:#fee2e2;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{height:100%}
+body{
+  min-height:100vh;font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--negro);
+  background:
+    radial-gradient(1100px 480px at 85% -8%, rgba(34,211,238,.22), transparent 60%),
+    radial-gradient(900px 420px at -15% 18%, rgba(37,99,235,.14), transparent 55%),
+    linear-gradient(180deg,#f0f9ff 0%,#f8fafc 55%,#eef6f9 100%);
+}
+.envoltura{max-width:560px;margin:0 auto;padding:0 16px 40px;min-height:100vh;display:flex;flex-direction:column}
+.pantalla{display:none;flex:1;flex-direction:column;animation:aparece .35s ease}
+.pantalla.on{display:flex}
+@keyframes aparece{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ---------- cabecera ---------- */
+.cabecera{
+  margin:0 -16px 22px;padding:34px 20px 26px;color:#fff;text-align:center;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--turq4) 0%,var(--turq3) 38%,var(--azul2) 78%,var(--azul3) 100%);
+  border-radius:0 0 30px 30px;box-shadow:0 14px 34px -14px rgba(13,71,120,.5);
+}
+.cabecera::before,.cabecera::after{content:"";position:absolute;border-radius:50%;border:2px solid rgba(255,255,255,.14)}
+.cabecera::before{width:230px;height:230px;right:-70px;top:-90px}
+.cabecera::after{width:150px;height:150px;left:-56px;bottom:-60px;border-width:1.6px}
+.cabecera .ola{position:absolute;inset:0;opacity:.16;pointer-events:none}
+.escudo{width:92px;height:auto;margin:0 auto 10px;display:block;filter:drop-shadow(0 8px 16px rgba(0,30,60,.4));position:relative}
+.cabecera h1{font-family:'Baloo 2',cursive;font-size:30px;font-weight:800;letter-spacing:.2px;line-height:1.1;position:relative}
+.cabecera .sub{font-size:14.5px;font-weight:600;color:#d9f6fd;margin-top:6px;position:relative}
+.cabecera .cole{font-size:12.5px;color:#a5dcef;margin-top:4px;letter-spacing:.4px;position:relative}
+
+/* ---------- tarjeta de ingreso ---------- */
+.card{
+  background:#fff;border:1px solid var(--borde);border-radius:20px;padding:22px 18px;
+  box-shadow:0 10px 26px -16px rgba(15,60,90,.25);
+}
+.card h2{font-family:'Baloo 2',cursive;font-size:20px;color:var(--turq4);margin-bottom:4px}
+.card .explica{font-size:13.5px;color:var(--gris);line-height:1.55;margin-bottom:16px}
+.campo{position:relative;margin-bottom:12px}
+.campo input{
+  width:100%;padding:15px 46px 15px 16px;font-size:16.5px;font-family:inherit;color:var(--negro);
+  border:2px solid var(--borde);border-radius:14px;background:#fbfdfe;outline:none;transition:border-color .18s,box-shadow .18s;
+}
+.campo input:focus{border-color:var(--turq3);box-shadow:0 0 0 4px rgba(6,182,212,.15)}
+.campo svg{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:22px;height:22px;color:var(--gris2)}
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:15px;
+  font-family:'Baloo 2',cursive;font-size:17.5px;font-weight:700;color:#fff;letter-spacing:.2px;
+  background:linear-gradient(120deg,var(--turq3),var(--azul2));border:0;border-radius:14px;cursor:pointer;
+  box-shadow:0 8px 18px -8px rgba(8,145,178,.55);transition:transform .12s,filter .12s;
+}
+.btn:active{transform:scale(.975)}
+.btn[disabled]{filter:grayscale(.4) opacity(.7);pointer-events:none}
+.btn svg{width:20px;height:20px}
+.pista{font-size:12px;color:var(--gris2);margin-top:12px;line-height:1.5;text-align:center}
+.error-msg{
+  display:none;margin-top:12px;padding:12px 14px;font-size:13.5px;font-weight:600;color:var(--alerta);
+  background:var(--alertabg);border:1px solid #fecaca;border-radius:12px;line-height:1.45;
+}
+.error-msg.on{display:block;animation:aparece .25s}
+.candidatos{display:none;margin-top:14px}
+.candidatos.on{display:block}
+.candidatos p{font-size:13px;font-weight:600;color:var(--gris);margin-bottom:8px}
+.cand{
+  display:block;width:100%;text-align:left;margin-bottom:8px;padding:12px 14px;font-family:inherit;font-size:15px;font-weight:600;
+  color:var(--azul3);background:var(--hielo);border:1.5px solid #a5f3fc;border-radius:12px;cursor:pointer;
+}
+.cand:active{background:#cffafe}
+.cand small{display:block;font-weight:400;color:var(--gris);font-size:11.5px}
+
+/* ---------- pantalla de notas ---------- */
+.saludo{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.saludo .esc-mini{width:52px;height:auto;flex-shrink:0}
+.saludo h2{font-family:'Baloo 2',cursive;font-size:21px;color:var(--turq4);line-height:1.15}
+.saludo p{font-size:12.5px;color:var(--gris)}
+.resumen{display:flex;gap:10px;margin-bottom:16px}
+.rchip{
+  flex:1;background:#fff;border:1px solid var(--borde);border-radius:16px;padding:12px 10px;text-align:center;
+  box-shadow:0 6px 16px -12px rgba(15,60,90,.22);
+}
+.rchip .n{font-family:'Baloo 2',cursive;font-size:24px;font-weight:800;line-height:1}
+.rchip .t{font-size:11px;font-weight:600;color:var(--gris);text-transform:uppercase;letter-spacing:.6px;margin-top:5px}
+.rchip.notas .n{color:var(--azul2)}
+.rchip.faltan .n{color:var(--warn)}
+.rchip.trim .n{color:var(--turq4)}
+
+.sect{font-family:'Baloo 2',cursive;font-size:16.5px;font-weight:700;color:var(--azul3);margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+.sect svg{width:19px;height:19px;color:var(--turq3)}
+.act{
+  display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--borde);border-radius:15px;
+  padding:13px 14px;margin-bottom:9px;box-shadow:0 5px 14px -12px rgba(15,60,90,.2);
+}
+.act .ico{
+  width:38px;height:38px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(140deg,var(--hielo),var(--cielo));color:var(--azul2);
+}
+.act .ico svg{width:20px;height:20px}
+.act .info{flex:1;min-width:0}
+.act .nombre{font-size:14.5px;font-weight:600;line-height:1.3}
+.act .estado{font-size:11.5px;color:var(--gris2);margin-top:2px}
+.nota{
+  font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;min-width:46px;text-align:center;padding:5px 8px;
+  border-radius:11px;color:var(--turq4);background:var(--hielo);border:1.5px solid #a5f3fc;
+}
+.nota.baja{color:var(--alerta);background:var(--alertabg);border-color:#fecaca}
+.nota.cero{color:var(--warn);background:var(--warnbg);border-color:#fde68a}
+.nota.vacia{color:var(--gris2);background:#f8fafc;border-style:dashed;font-family:'Inter';font-size:12px;font-weight:600;padding:9px 8px}
+.act.baja{border-color:#fecaca;background:#fffafc}
+
+.trimestre{
+  margin-top:6px;background:linear-gradient(120deg,var(--azul3),var(--turq4));border-radius:18px;color:#fff;
+  padding:18px;display:flex;align-items:center;gap:16px;box-shadow:0 12px 26px -14px rgba(30,58,138,.55);
+}
+.trimestre .tn{font-family:'Baloo 2',cursive;font-size:40px;font-weight:800;min-width:62px;text-align:center;
+  background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.35);border-radius:14px;padding:6px 10px}
+.trimestre .tt{font-size:15px;font-weight:700}
+.trimestre .td{font-size:12px;color:#bfdbfe;margin-top:3px;line-height:1.45}
+.trimestre.pend .tn{font-size:14px;font-family:'Inter';font-weight:600}
+
+.faltan-lista{list-style:none}
+.faltan-lista li{
+  display:flex;gap:10px;align-items:flex-start;background:var(--warnbg);border:1px solid #fde68a;border-radius:12px;
+  padding:10px 13px;margin-bottom:8px;font-size:13.5px;font-weight:500;color:#78350f;line-height:1.4;
+}
+.faltan-lista li svg{width:17px;height:17px;flex-shrink:0;color:var(--warn);margin-top:1px}
+.al-dia{
+  display:flex;gap:10px;align-items:center;background:var(--hielo);border:1px solid #a5f3fc;border-radius:12px;
+  padding:12px 14px;font-size:14px;font-weight:600;color:var(--turq4);
+}
+.al-dia svg{width:20px;height:20px;color:var(--ok)}
+
+/* ---------- botones de actividades ---------- */
+.apps{display:flex;flex-direction:column;gap:11px;margin-top:4px}
+.app-btn{
+  display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:16px;text-decoration:none;color:#fff;
+  box-shadow:0 10px 22px -12px rgba(20,60,140,.5);transition:transform .12s;
+}
+.app-btn:active{transform:scale(.98)}
+.app-btn .ico{width:44px;height:44px;flex-shrink:0;border-radius:12px;background:rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center}
+.app-btn .ico svg{width:24px;height:24px}
+.app-btn .tx{flex:1}
+.app-btn .t{font-family:'Baloo 2',cursive;font-size:16.5px;font-weight:700;line-height:1.15}
+.app-btn .d{font-size:11.5px;opacity:.85;margin-top:2px}
+.app-btn .flecha svg{width:20px;height:20px;opacity:.8}
+.app-btn.juego{background:linear-gradient(120deg,var(--turq3),#0284c7)}
+.app-btn.quiz{background:linear-gradient(120deg,var(--azul2),var(--azul3))}
+
+.acciones{display:flex;gap:10px;margin-top:22px}
+.acciones .sec{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:12px;font-family:inherit;
+  font-size:13.5px;font-weight:600;color:var(--turq4);background:#fff;border:1.5px solid var(--borde);
+  border-radius:13px;cursor:pointer;
+}
+.acciones .sec svg{width:16px;height:16px}
+.acciones .sec:active{background:var(--hielo)}
+.cargando{display:flex;flex-direction:column;align-items:center;gap:14px;padding:44px 0;color:var(--gris);font-size:14px}
+.anillo{width:42px;height:42px;border:4px solid var(--cielo);border-top-color:var(--turq3);border-radius:50%;animation:gira .8s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+.pie{margin-top:auto;padding-top:28px;text-align:center;font-size:11px;color:var(--gris2);line-height:1.6}
+.pie b{color:var(--turq4)}
+@media (min-width:560px){
+  .cabecera{border-radius:0 0 34px 34px}
+}
+</style>
+</head>
+<body>
+<div class="envoltura">
+
+  <!-- ============ PANTALLA INGRESO ============ -->
+  <section class="pantalla on" id="p-inicio">
+    <div class="cabecera">
+      <img class="escudo" src="assets/escudo-app.png" alt="Escudo Colegio N° 5050">
+      <h1>Mis notas</h1>
+      <div class="sub">5° año · Turno Mañana · 3er trimestre</div>
+      <div class="cole">Colegio Secundario N° 5050 · Vaqueros, La Caldera</div>
+    </div>
+
+    <div class="card">
+      <h2>Ingresá tu nombre</h2>
+      <p class="explica">Escribí tu apellido y tu nombre como te salga: con mayúsculas o minúsculas, con o sin tildes, con todos tus nombres o solo uno. La app te encuentra igual.</p>
+      <div class="campo">
+        <input type="text" id="nombre" autocomplete="name" autocapitalize="words" placeholder="Ej.: Acosta Kiara" enterkeyhint="go">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </div>
+      <button class="btn" id="btn-entrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        Ver mis notas
+      </button>
+      <div class="error-msg" id="err"></div>
+      <div class="candidatos" id="cands"></div>
+      <p class="pista">Solo los estudiantes de 5° año turno mañana figuran en esta planilla. Tus notas se leen en vivo: si el docente recién cargó, tocá de nuevo.</p>
+    </div>
+    <div class="pie">Colegio Secundario <b>N° 5050</b> · Vaqueros, La Caldera · Salta</div>
+  </section>
+
+  <!-- ============ PANTALLA NOTAS ============ -->
+  <section class="pantalla" id="p-notas">
+    <div class="saludo">
+      <img class="esc-mini" src="assets/escudo-app.png" alt="">
+      <div>
+        <h2 id="saludo-nom"></h2>
+        <p id="saludo-sub">5° año · Turno Mañana · Notas del 3er trimestre</p>
+      </div>
+    </div>
+
+    <div class="resumen">
+      <div class="rchip notas"><div class="n" id="r-notas">0</div><div class="t">Notas cargadas</div></div>
+      <div class="rchip faltan"><div class="n" id="r-faltan">0</div><div class="t">Por calificar</div></div>
+      <div class="rchip trim"><div class="n" id="r-trim">—</div><div class="t">Trimestre</div></div>
+    </div>
+
+    <div id="cargador" class="cargando"><div class="anillo"></div><span>Buscando tus notas en la planilla…</span></div>
+
+    <div id="contenido" style="display:none">
+      <h3 class="sect"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Tus actividades</h3>
+      <div id="acts"></div>
+
+      <div id="trimestre-blk"></div>
+
+      <h3 class="sect"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>¿Qué te falta?</h3>
+      <div id="faltan"></div>
+
+      <h3 class="sect"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/><path d="m21 3-9 9"/></svg>Más actividades</h3>
+      <div class="apps">
+        <a class="app-btn juego" href="https://patodoc27.github.io/pasapalabra-ia/" target="_blank" rel="noopener">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg></span>
+          <span class="tx"><span class="t">Juego educativo: Pasapalabra</span><span class="d">El rosco de dos puntos · jugá y sumá nota</span></span>
+          <span class="flecha"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+        </a>
+        <a class="app-btn quiz" href="https://patodoc27.github.io/quiz-ia-5050/" target="_blank" rel="noopener">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 9h6M9 13h6M9 17h3"/></svg></span>
+          <span class="tx"><span class="t">Cuestionario Virtual</span><span class="d">El quiz final · rendilo desde acá</span></span>
+          <span class="flecha"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+        </a>
+      </div>
+    </div>
+
+    <div id="fallo" style="display:none" class="error-msg on"></div>
+
+    <div class="acciones">
+      <button class="sec" id="btn-actualizar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+        Actualizar notas
+      </button>
+      <button class="sec" id="btn-salir">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg>
+        No soy yo
+      </button>
+    </div>
+    <div class="pie">Notas del 3er trimestre · Colegio <b>N° 5050</b> · Vaqueros, La Caldera</div>
+  </section>
+</div>
+
+<script>
+/* =========================================================
+   Mis notas · 5° TM · Colegio 5050
+   Lee en vivo la planilla de Google Sheets (gviz JSONP),
+   encuentra al estudiante por nombre tolerante y muestra
+   solamente las notas del 3er trimestre.
+   ========================================================= */
+var SHEET_ID = '1qpX0-H2cYtXMfKPkPed3b-vExQR0-Pa0uhseydH-zx0';
+var SIN_NOTA = 'Sin nota';
+
+function $(id){return document.getElementById(id);}
+
+/* ---------- normalización / matching tolerante ---------- */
+function norm(s){
+  s=String(s==null?'':s);
+  s=s.normalize?s.normalize('NFD'):s;
+  s=s.replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  s=s.replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ');
+  return s.replace(/^\s+|\s+$/g,'');
+}
+function toks(s){var n=norm(s);return n?n.split(' '):[];}
+function lev1(a,b){
+  if(a===b)return true;
+  var la=a.length,lb=b.length;
+  if(Math.abs(la-lb)>1||Math.min(la,lb)<4)return false;
+  var i=0,j=0,diff=0;
+  while(i<la&&j<lb){
+    if(a[i]===b[j]){i++;j++;}
+    else{
+      diff++;if(diff>1)return false;
+      if(la===lb&&i+1<la&&j+1<lb&&a[i+1]===b[j]&&a[i]===b[j+1]){i+=2;j+=2;}
+      else if(la===lb){i++;j++;}
+      else if(la>lb){i++;}
+      else{j++;}
+    }
+  }
+  return diff+(la-i)+(lb-j)<=1;
+}
+function tokMatch(t,pool){
+  for(var k=0;k<pool.length;k++){
+    var w=pool[k];
+    if(lev1(t,w))return true;
+    if(t.length>=3&&(w.indexOf(t)===0))return true;
+    if(w.length>=4&&(t.indexOf(w)===0))return true;
+  }
+  return false;
+}
+
+/* ---------- gviz ---------- */
+var cbSeq=0;
+function gviz(){
+  return new Promise(function(res,rej){
+    var cb='__gv'+(cbSeq++);
+    var done=false;
+    window[cb]=function(d){done=true;try{res(d);}finally{delete window[cb];}};
+    var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq'
+      +'?tqx=out:json;responseHandler:'+cb+';headers:-1&_='+Date.now();
+    var s=document.createElement('script');
+    s.src=url;s.async=true;
+    s.onerror=function(){delete window[cb];rej(new Error('net'));};
+    document.head.appendChild(s);
+    setTimeout(function(){if(!done){try{delete window[cb];}catch(e){}rej(new Error('timeout'));}},20000);
+  });
+}
+
+/* ---------- modelo ---------- */
+/* La pestaña tiene: col 0 = nº, col 1 = APELLIDO Y NOMBRE,
+   cols 2..9 = actividades del 3er trimestre,
+   cols vacías intermedias, col 12 = nota 3° TRIMESTRE,
+   col 13 = observaciones (no se muestra). */
+function esObs(l){var n=norm(l);return n.indexOf('observac')>=0;}
+function esTrim(l){var n=norm(l);return (n.indexOf('trimestre')>=0||n.indexOf('termino')>=0)&&!esObs(l);}
+function esNombre(l){var n=norm(l);return n.indexOf('apellido')>=0&&n.indexOf('nombre')>=0;}
+function esVacia(l){return norm(l)==='';}
+
+var DATA=null, FILAS=[], COLS=[], NAME_COL=-1, TRIM_COL=-1, ACT_COLS=[];
+
+function armarModelo(d){
+  var t=d&&d.table;if(!t)throw new Error('empty');
+  COLS=t.cols||[];FILAS=t.rows||[];
+  NAME_COL=-1;TRIM_COL=-1;ACT_COLS=[];
+  for(var i=0;i<COLS.length;i++){
+    var lab=(COLS[i]&&COLS[i].label)||'';
+    if(esNombre(lab))NAME_COL=i;
+  }
+  if(NAME_COL<0)NAME_COL=1;
+  for(i=0;i<COLS.length;i++){
+    lab=(COLS[i]&&COLS[i].label)||'';
+    if(i===NAME_COL)continue;
+    if(esObs(lab))continue;             /* observaciones no van */
+    if(esVacia(lab))continue;
+    if(esTrim(lab)){TRIM_COL=i;continue;}
+    if(i===0)continue;                  /* columna de números */
+    ACT_COLS.push(i);
+  }
+}
+function celdaTexto(c){
+  if(!c)return null;
+  var v=(c.f!=null)?c.f:c.v;
+  if(v==null)return null;
+  if(typeof v==='number'){
+    if(Math.round(v)===v)return String(v);
+    return v.toFixed(2).replace('.',',');
+  }
+  var t=String(v).replace(/^\s+|\s+$/g,'');
+  if(!t)return null;
+  return t;
+}
+function alumnos(){
+  var out=[];
+  for(var r=0;r<FILAS.length;r++){
+    var c=(FILAS[r].c||[])[NAME_COL];
+    var nom=celdaTexto(c);
+    if(nom)out.push({r:r,nombre:nom,t:toks(nom)});
+  }
+  return out;
+}
+
+/* ---------- búsqueda tolerante ---------- */
+function buscar(input){
+  var pool=toks(input);
+  if(!pool.length)return[];
+  var lista=alumnos(),out=[];
+  for(var i=0;i<lista.length;i++){
+    var st=lista[i],ok=true;
+    for(var k=0;k<pool.length;k++){if(!tokMatch(pool[k],st.t)){ok=false;break;}}
+    if(ok)out.push({i:i,score:pool.length});
+  }
+  /* si ninguna cumple todos los tokens, probamos "apellido+nombre"
+     tolerando UN token mal escrito */
+  if(!out.length&&pool.length>=2){
+    for(i=0;i<lista.length;i++){
+      st=lista[i];
+      var hits=0;
+      for(k=0;k<pool.length;k++){if(tokMatch(pool[k],st.t))hits++;}
+      if(hits>=pool.length-1)out.push({i:i,score:hits});
+    }
+  }
+  out.sort(function(a,b){return b.score-a.score;});
+  return out;
+}
+
+/* ---------- formato de nota ---------- */
+function fmtNota(t){
+  if(t==null)return null;
+  var n=parseFloat(String(t).replace(',','.'));
+  if(isNaN(n))return t;
+  if(Math.round(n)===n)return String(n);
+  return n.toFixed(2).replace('.',',');
+}
+function numNota(t){var n=parseFloat(String(t).replace(',','.'));return isNaN(n)?null:n;}
+
+/* ---------- pantallas ---------- */
+function ir(id){
+  var ps=document.querySelectorAll('.pantalla');
+  for(var i=0;i<ps.length;i++)ps[i].classList.remove('on');
+  $(id).classList.add('on');
+  window.scrollTo(0,0);
+}
+function err(m){var e=$('err');e.textContent=m;e.classList.add('on');}
+function limpiaErr(){$('err').classList.remove('on');$('cands').classList.remove('on');$('cands').innerHTML='';}
+
+var LISTA=[];
+var ALUMNO=null;
+
+function mostrarCandidatos(hits){
+  var box=$('cands');box.innerHTML='';
+  var p=document.createElement('p');
+  p.textContent='Encontré varias personas. ¿Quién sos?';
+  box.appendChild(p);
+  for(var i=0;i<hits.length&&i<6;i++){
+    (function(h){
+      var b=document.createElement('button');
+      b.type='button';b.className='cand';
+      var al=LISTA[h.i];
+      var nom=al.nombre;
+      b.innerHTML='';
+      var s1=document.createElement('span');s1.textContent=nom;b.appendChild(s1);
+      var s2=document.createElement('small');s2.textContent='Tocá para ver tus notas';b.appendChild(s2);
+      b.onclick=function(){limpiaErr();entrar(al);};
+      box.appendChild(b);
+    })(hits[i]);
+  }
+  box.classList.add('on');
+}
+
+function entrar(al){
+  ALUMNO=al;
+  $('saludo-nom').textContent='¡Hola, '+al.nombre+'!';
+  ir('p-notas');
+  cargarNotas(true);
+}
+
+function tituloAct(lab){
+  var t=String(lab).replace(/\s+/g,' ').replace(/^\s+|\s+$/g,'');
+  return t;
+}
+
+function cargarNotas(primera){
+  $('cargador').style.display='flex';
+  $('contenido').style.display='none';
+  $('fallo').style.display='none';
+  gviz().then(function(d){
+    armarModelo(d);
+    DATA=d;
+    LISTA=alumnos();
+    /* reubica al alumno en la fila nueva por si cambió el orden */
+    var me=null;
+    for(var i=0;i<LISTA.length;i++){
+      if(norm(LISTA[i].nombre)===norm(ALUMNO.nombre)){me=LISTA[i];break;}
+    }
+    if(!me)me=ALUMNO;
+    pintar(me);
+  }).catch(function(){
+    $('cargador').style.display='none';
+    var f=$('fallo');f.style.display='block';
+    f.textContent='No pudimos leer la planilla. Revisá tu conexión y tocá "Actualizar notas".';
+  });
+}
+
+function pintar(me){
+  var celdas=(FILAS[me.r]&&FILAS[me.r].c)||[];
+  var notas=0,falta=[],bajas=0;
+  var acts=$('acts');acts.innerHTML='';
+  for(var i=0;i<ACT_COLS.length;i++){
+    var ix=ACT_COLS[i];
+    var lab=tituloAct((COLS[ix]&&COLS[ix].label)||'');
+    var raw=celdaTexto(celdas[ix]);
+    var nota=fmtNota(raw);
+    var n=numNota(raw);
+    var row=document.createElement('div');row.className='act';
+    var ico=document.createElement('div');ico.className='ico';
+    ico.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+    var info=document.createElement('div');info.className='info';
+    var nm=document.createElement('div');nm.className='nombre';nm.textContent=lab;
+    var st=document.createElement('div');st.className='estado';
+    var chip=document.createElement('div');chip.className='nota';
+    if(nota==null){
+      chip.className='nota vacia';chip.textContent=SIN_NOTA;
+      st.textContent='El docente todavía no cargó esta nota';
+      falta.push(lab+' — aún sin nota');
+    }else if(n===0){
+      chip.className='nota cero';chip.textContent='0';
+      st.textContent='Pendiente de entrega';
+      falta.push(lab+' — pendiente de entrega');
+      notas++;
+    }else{
+      chip.textContent=nota;
+      if(n!=null&&n<=5){chip.className='nota baja';row.className='act baja';bajas++;}
+      st.textContent=(n!=null&&n<=5)?'Nota cargada — a repasar':'Nota cargada';
+      notas++;
+    }
+    info.appendChild(nm);info.appendChild(st);
+    row.appendChild(ico);row.appendChild(info);row.appendChild(chip);
+    acts.appendChild(row);
+  }
+  /* trimestre */
+  var tb=$('trimestre-blk');tb.innerHTML='';
+  var h3=document.createElement('h3');h3.className='sect';
+  h3.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.26L21.5 9.3l-4.75 4.4 1.25 6.55L12 17.1l-6 3.15 1.25-6.55L2.5 9.3l6.6-1.04Z"/></svg>Nota del trimestre';
+  tb.appendChild(h3);
+  var trim=document.createElement('div');trim.className='trimestre';
+  var tnota=TRIM_COL>=0?fmtNota(celdaTexto(celdas[TRIM_COL])):null;
+  var tn=numNota(tnota);
+  if(tnota==null){
+    trim.className='trimestre pend';
+    trim.innerHTML='<div class="tn">—</div><div><div class="tt">3er trimestre</div><div class="td">Todavía no hay nota final cargada. Cuando el docente la suba, aparece acá.</div></div>';
+  }else{
+    var extra=(tn!=null&&tn<=5)?'Está por debajo de la aprobación: aprovechá el recuperatorio.':'';
+    trim.innerHTML='<div class="tn">'+tnota+'</div><div><div class="tt">3er trimestre</div><div class="td">'+(extra||'Nota del trimestre cargada por el docente.')+'</div></div>';
+  }
+  tb.appendChild(trim);
+  /* faltan */
+  var fb=$('faltan');fb.innerHTML='';
+  if(falta.length){
+    var ul=document.createElement('ul');ul.className='faltan-lista';
+    for(i=0;i<falta.length;i++){
+      var li=document.createElement('li');
+      li.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+      var sp=document.createElement('span');sp.textContent=falta[i];li.appendChild(sp);
+      ul.appendChild(li);
+    }
+    fb.appendChild(ul);
+  }else{
+    var ok=document.createElement('div');ok.className='al-dia';
+    ok.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+    var sp2=document.createElement('span');sp2.textContent='¡Estás al día! Todas tus actividades ya tienen nota.';ok.appendChild(sp2);
+    fb.appendChild(ok);
+  }
+  /* resumen */
+  $('r-notas').textContent=notas;
+  $('r-faltan').textContent=falta.length;
+  $('r-trim').textContent=tnota==null?'—':tnota;
+  $('cargador').style.display='none';
+  $('contenido').style.display='block';
+}
+
+/* ---------- eventos ---------- */
+$('btn-entrar').addEventListener('click',function(){
+  limpiaErr();
+  var input=$('nombre').value;
+  if(!norm(input)){err('Escribí tu apellido y tu nombre para entrar.');return;}
+  var btn=$('btn-entrar');btn.disabled=true;
+  var go=function(){
+    btn.disabled=false;
+    var hits=buscar(input);
+    if(!hits.length){err('No te encontré en la lista de 5° turno mañana. Revisá cómo escribiste tu nombre (apellido + nombre) e intentá de nuevo.');return;}
+    if(hits.length===1){entrar(LISTA[hits[0].i]);return;}
+    mostrarCandidatos(hits);
+  };
+  if(!DATA){
+    gviz().then(function(d){
+      armarModelo(d);DATA=d;LISTA=alumnos();go();
+    }).catch(function(){
+      btn.disabled=false;
+      err('No pudimos leer la planilla. Revisá tu conexión e intentá de nuevo.');
+    });
+  }else go();
+});
+$('nombre').addEventListener('keydown',function(e){
+  if(e.key==='Enter'){$('btn-entrar').click();}
+});
+$('btn-actualizar').addEventListener('click',function(){cargarNotas(false);});
+$('btn-salir').addEventListener('click',function(){
+  ALUMNO=null;$('nombre').value='';limpiaErr();ir('p-inicio');
+  setTimeout(function(){$('nombre').focus();},250);
+});
+
+/* ---------- PWA ---------- */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
