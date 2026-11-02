@@ -46,16 +46,17 @@ body{
 .cabecera::before{width:230px;height:230px;right:-70px;top:-90px}
 .cabecera::after{width:150px;height:150px;left:-56px;bottom:-60px;border-width:1.6px}
 .cabecera .ola{position:absolute;inset:0;opacity:.16;pointer-events:none}
-.btn-full{
+.sup-act{position:absolute;top:12px;right:12px;display:flex;gap:8px;z-index:3}
+.btn-full,.btn-mus{
   display:flex;align-items:center;gap:6px;
   padding:7px 11px;border-radius:11px;background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.4);
   color:#fff;font-family:inherit;font-size:11px;font-weight:600;letter-spacing:.2px;cursor:pointer;
 }
-.btn-full svg{width:15px;height:15px;flex-shrink:0}
-.btn-full.en-cab{position:absolute;top:12px;right:12px;z-index:3}
-.btn-full.en-cab:active{background:rgba(255,255,255,.3)}
-.btn-full.en-notas{margin-left:auto;flex-shrink:0;background:#fff;border-color:var(--borde);color:var(--turq4);box-shadow:0 5px 14px -10px rgba(15,60,90,.3)}
-.btn-full.en-notas:active{background:var(--hielo)}
+.btn-full svg,.btn-mus svg{width:15px;height:15px;flex-shrink:0}
+.sup-act .btn-full:active,.sup-act .btn-mus:active{background:rgba(255,255,255,.3)}
+.btn-mus.en-notas{margin-left:auto}
+.btn-full.en-notas,.btn-mus.en-notas{flex-shrink:0;background:#fff;border-color:var(--borde);color:var(--turq4);box-shadow:0 5px 14px -10px rgba(15,60,90,.3)}
+.btn-full.en-notas:active,.btn-mus.en-notas:active{background:var(--hielo)}
 .escudo{width:76px;height:auto;margin:0 auto 8px;display:block;filter:drop-shadow(0 8px 16px rgba(0,30,60,.4));position:relative}
 .cabecera h1{font-family:'Baloo 2',cursive;font-size:27px;font-weight:800;letter-spacing:.2px;line-height:1.1;position:relative}
 .cabecera .sub{font-size:13.5px;font-weight:600;color:#d9f6fd;margin-top:4px;position:relative}
@@ -208,11 +209,18 @@ body{
   <!-- ============ PANTALLA INGRESO ============ -->
   <section class="pantalla on" id="p-inicio">
     <div class="cabecera">
-      <button class="btn-full en-cab" aria-label="Activar pantalla completa">
-        <svg class="fs-abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
-        <svg class="fs-cerrar" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>
-        <span class="fs-txt">Pantalla completa</span>
-      </button>
+      <div class="sup-act">
+        <button class="btn-mus" aria-label="Silenciar música">
+          <svg class="mus-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+          <svg class="mus-off" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg>
+          <span>Música</span>
+        </button>
+        <button class="btn-full" aria-label="Activar pantalla completa">
+          <svg class="fs-abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+          <svg class="fs-cerrar" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>
+          <span class="fs-txt">Pantalla completa</span>
+        </button>
+      </div>
       <img class="escudo" src="assets/escudo-app.png" alt="Escudo Colegio N°5050">
       <h1>Mis notas</h1>
       <div class="sub">5° año · Turno Mañana · 3er trimestre</div>
@@ -247,6 +255,11 @@ body{
         <h2 id="saludo-nom"></h2>
         <p id="saludo-sub">5° año · Turno Mañana · Notas del 3er trimestre</p>
       </div>
+      <button class="btn-mus en-notas" aria-label="Silenciar música">
+        <svg class="mus-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+        <svg class="mus-off" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg>
+        <span>Música</span>
+      </button>
       <button class="btn-full en-notas" aria-label="Activar pantalla completa">
         <svg class="fs-abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
         <svg class="fs-cerrar" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>
@@ -302,6 +315,8 @@ body{
     <div class="pie">Notas del 3er trimestre · Colegio <b>N°5050</b> · Vaqueros, La Caldera</div>
   </section>
 </div>
+
+<audio id="musica" src="assets/musica.mp3" loop preload="auto"></audio>
 
 <script>
 /* =========================================================
@@ -630,6 +645,34 @@ $('btn-salir').addEventListener('click',function(){
   ALUMNO=null;$('nombre').value='';limpiaErr();ir('p-inicio');
   setTimeout(function(){$('nombre').focus();},250);
 });
+
+/* ---------- música de fondo ---------- */
+(function(){
+  var mus=document.getElementById('musica');if(!mus)return;
+  var btns=document.querySelectorAll('.btn-mus');
+  mus.volume=0.32;
+  function pinta(){
+    var off=mus.paused;
+    for(var i=0;i<btns.length;i++){
+      btns[i].querySelector('.mus-on').style.display=off?'none':'block';
+      btns[i].querySelector('.mus-off').style.display=off?'block':'none';
+      btns[i].setAttribute('aria-label',off?'Activar música':'Silenciar música');
+    }
+  }
+  function intentar(){var p=mus.play();if(p&&p.catch)p.catch(function(){});}
+  var tocado=false;
+  function primerToque(){if(tocado)return;tocado=true;intentar();}
+  document.addEventListener('pointerdown',primerToque);
+  document.addEventListener('keydown',primerToque);
+  for(var i=0;i<btns.length;i++){
+    btns[i].addEventListener('click',function(){
+      if(mus.paused)intentar();else mus.pause();
+    });
+  }
+  mus.addEventListener('play',pinta);
+  mus.addEventListener('pause',pinta);
+  pinta();
+})();
 
 /* ---------- pantalla completa ---------- */
 (function(){
