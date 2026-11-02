@@ -38,7 +38,7 @@ body{
 
 /* ---------- cabecera ---------- */
 .cabecera{
-  margin:0 -16px 22px;padding:34px 20px 26px;color:#fff;text-align:center;position:relative;overflow:hidden;
+  margin:0 -16px 16px;padding:22px 20px 18px;color:#fff;text-align:center;position:relative;overflow:hidden;
   background:linear-gradient(135deg,var(--turq4) 0%,var(--turq3) 38%,var(--azul2) 78%,var(--azul3) 100%);
   border-radius:0 0 30px 30px;box-shadow:0 14px 34px -14px rgba(13,71,120,.5);
 }
@@ -46,19 +46,19 @@ body{
 .cabecera::before{width:230px;height:230px;right:-70px;top:-90px}
 .cabecera::after{width:150px;height:150px;left:-56px;bottom:-60px;border-width:1.6px}
 .cabecera .ola{position:absolute;inset:0;opacity:.16;pointer-events:none}
-.escudo{width:92px;height:auto;margin:0 auto 10px;display:block;filter:drop-shadow(0 8px 16px rgba(0,30,60,.4));position:relative}
-.cabecera h1{font-family:'Baloo 2',cursive;font-size:30px;font-weight:800;letter-spacing:.2px;line-height:1.1;position:relative}
-.cabecera .sub{font-size:14.5px;font-weight:600;color:#d9f6fd;margin-top:6px;position:relative}
-.cabecera .cole{font-size:12.5px;color:#a5dcef;margin-top:4px;letter-spacing:.4px;position:relative}
+.escudo{width:76px;height:auto;margin:0 auto 8px;display:block;filter:drop-shadow(0 8px 16px rgba(0,30,60,.4));position:relative}
+.cabecera h1{font-family:'Baloo 2',cursive;font-size:27px;font-weight:800;letter-spacing:.2px;line-height:1.1;position:relative}
+.cabecera .sub{font-size:13.5px;font-weight:600;color:#d9f6fd;margin-top:4px;position:relative}
+.cabecera .cole{font-size:12px;color:#a5dcef;margin-top:3px;letter-spacing:.4px;position:relative}
 
 /* ---------- tarjeta de ingreso ---------- */
 .card{
-  background:#fff;border:1px solid var(--borde);border-radius:20px;padding:22px 18px;
+  background:#fff;border:1px solid var(--borde);border-radius:20px;padding:16px 16px;
   box-shadow:0 10px 26px -16px rgba(15,60,90,.25);
 }
-.card h2{font-family:'Baloo 2',cursive;font-size:20px;color:var(--turq4);margin-bottom:4px}
-.card .explica{font-size:13.5px;color:var(--gris);line-height:1.55;margin-bottom:16px}
-.campo{position:relative;margin-bottom:12px}
+.card h2{font-family:'Baloo 2',cursive;font-size:19px;color:var(--turq4);margin-bottom:3px}
+.card .explica{font-size:13px;color:var(--gris);line-height:1.5;margin-bottom:12px}
+.campo{position:relative;margin-bottom:10px}
 .campo input{
   width:100%;padding:15px 46px 15px 16px;font-size:16.5px;font-family:inherit;color:var(--negro);
   border:2px solid var(--borde);border-radius:14px;background:#fbfdfe;outline:none;transition:border-color .18s,box-shadow .18s;
@@ -74,7 +74,7 @@ body{
 .btn:active{transform:scale(.975)}
 .btn[disabled]{filter:grayscale(.4) opacity(.7);pointer-events:none}
 .btn svg{width:20px;height:20px}
-.pista{font-size:12px;color:var(--gris2);margin-top:12px;line-height:1.5;text-align:center}
+.pista{font-size:11.5px;color:var(--gris2);margin-top:10px;line-height:1.45;text-align:center}
 .error-msg{
   display:none;margin-top:12px;padding:12px 14px;font-size:13.5px;font-weight:600;color:var(--alerta);
   background:var(--alertabg);border:1px solid #fecaca;border-radius:12px;line-height:1.45;
@@ -184,8 +184,9 @@ body{
 .cargando{display:flex;flex-direction:column;align-items:center;gap:14px;padding:44px 0;color:var(--gris);font-size:14px}
 .anillo{width:42px;height:42px;border:4px solid var(--cielo);border-top-color:var(--turq3);border-radius:50%;animation:gira .8s linear infinite}
 @keyframes gira{to{transform:rotate(360deg)}}
-.pie{margin-top:auto;padding-top:28px;text-align:center;font-size:11px;color:var(--gris2);line-height:1.6}
+.pie{margin-top:auto;padding-top:14px;text-align:center;font-size:11px;color:var(--gris2);line-height:1.55}
 .pie b{color:var(--turq4)}
+.pie .dev{margin-top:3px;font-size:10.5px;color:#b0bfcc}
 @media (min-width:560px){
   .cabecera{border-radius:0 0 34px 34px}
 }
@@ -218,7 +219,10 @@ body{
       <div class="candidatos" id="cands"></div>
       <p class="pista">Solo los estudiantes de 5° año turno mañana figuran en esta planilla. Tus notas se leen en vivo: si el docente recién cargó, tocá de nuevo.</p>
     </div>
-    <div class="pie">Colegio Secundario <b>N° 5050</b> · Vaqueros, La Caldera · Salta</div>
+    <div class="pie">
+      <div>Colegio Secundario <b>N° 5050</b> · Vaqueros, La Caldera · Salta</div>
+      <div class="dev">Desarrollado por Patricia Inescastro · en colaboración con Devin (Cognition)</div>
+    </div>
   </section>
 
   <!-- ============ PANTALLA NOTAS ============ -->
@@ -261,7 +265,7 @@ body{
           <span class="flecha"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
         </a>
       </div>
-      <p class="apps-nota"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-5M12 8h.01"/></svg><span>«Mejor desempeño en actividades virtuales» se actualiza con tus 5 mejores puntajes entre el Pasapalabra y el Cuestionario Virtual.</span></p>
+      <p class="apps-nota"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-5M12 8h.01"/></svg><span>«Mejor desempeño en actividades virtuales» se actualiza con los cinco mejores puntajes entre el Pasapalabra y el Cuestionario Virtual.</span></p>
     </div>
 
     <div id="fallo" style="display:none" class="error-msg on"></div>
