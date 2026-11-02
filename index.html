@@ -46,6 +46,16 @@ body{
 .cabecera::before{width:230px;height:230px;right:-70px;top:-90px}
 .cabecera::after{width:150px;height:150px;left:-56px;bottom:-60px;border-width:1.6px}
 .cabecera .ola{position:absolute;inset:0;opacity:.16;pointer-events:none}
+.btn-full{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 11px;border-radius:11px;background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.4);
+  color:#fff;font-family:inherit;font-size:11px;font-weight:600;letter-spacing:.2px;cursor:pointer;
+}
+.btn-full svg{width:15px;height:15px;flex-shrink:0}
+.btn-full.en-cab{position:absolute;top:12px;right:12px;z-index:3}
+.btn-full.en-cab:active{background:rgba(255,255,255,.3)}
+.btn-full.en-notas{margin-left:auto;flex-shrink:0;background:#fff;border-color:var(--borde);color:var(--turq4);box-shadow:0 5px 14px -10px rgba(15,60,90,.3)}
+.btn-full.en-notas:active{background:var(--hielo)}
 .escudo{width:76px;height:auto;margin:0 auto 8px;display:block;filter:drop-shadow(0 8px 16px rgba(0,30,60,.4));position:relative}
 .cabecera h1{font-family:'Baloo 2',cursive;font-size:27px;font-weight:800;letter-spacing:.2px;line-height:1.1;position:relative}
 .cabecera .sub{font-size:13.5px;font-weight:600;color:#d9f6fd;margin-top:4px;position:relative}
@@ -198,6 +208,11 @@ body{
   <!-- ============ PANTALLA INGRESO ============ -->
   <section class="pantalla on" id="p-inicio">
     <div class="cabecera">
+      <button class="btn-full en-cab" aria-label="Activar pantalla completa">
+        <svg class="fs-abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+        <svg class="fs-cerrar" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>
+        <span class="fs-txt">Pantalla completa</span>
+      </button>
       <img class="escudo" src="assets/escudo-app.png" alt="Escudo Colegio N° 5050">
       <h1>Mis notas</h1>
       <div class="sub">5° año · Turno Mañana · 3er trimestre</div>
@@ -233,6 +248,11 @@ body{
         <h2 id="saludo-nom"></h2>
         <p id="saludo-sub">5° año · Turno Mañana · Notas del 3er trimestre</p>
       </div>
+      <button class="btn-full en-notas" aria-label="Activar pantalla completa">
+        <svg class="fs-abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+        <svg class="fs-cerrar" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>
+        <span class="fs-txt">Pantalla completa</span>
+      </button>
     </div>
 
     <div class="resumen">
@@ -611,6 +631,41 @@ $('btn-salir').addEventListener('click',function(){
   ALUMNO=null;$('nombre').value='';limpiaErr();ir('p-inicio');
   setTimeout(function(){$('nombre').focus();},250);
 });
+
+/* ---------- pantalla completa ---------- */
+(function(){
+  var btns=document.querySelectorAll('.btn-full');if(!btns.length)return;
+  var root=document.documentElement;
+  function enFs(){return !!(document.fullscreenElement||document.webkitFullscreenElement);}
+  function pintar(){
+    var on=enFs();
+    for(var i=0;i<btns.length;i++){
+      var b=btns[i];
+      b.querySelector('.fs-abrir').style.display=on?'none':'block';
+      b.querySelector('.fs-cerrar').style.display=on?'block':'none';
+      b.querySelector('.fs-txt').textContent=on?'Salir':'Pantalla completa';
+      b.setAttribute('aria-label',on?'Salir de pantalla completa':'Activar pantalla completa');
+    }
+  }
+  if(!root.requestFullscreen&&!root.webkitRequestFullscreen){
+    for(var j=0;j<btns.length;j++)btns[j].style.display='none';
+    return;
+  }
+  for(var k=0;k<btns.length;k++){
+    btns[k].addEventListener('click',function(){
+      if(enFs()){
+        if(document.exitFullscreen)document.exitFullscreen();
+        else document.webkitExitFullscreen();
+      }else{
+        var p=root.requestFullscreen?root.requestFullscreen():root.webkitRequestFullscreen();
+        if(p&&p.catch)p.catch(function(){});
+      }
+    });
+  }
+  document.addEventListener('fullscreenchange',pintar);
+  document.addEventListener('webkitfullscreenchange',pintar);
+  pintar();
+})();
 
 /* ---------- pantalla fija: bloquear zoom por gestos (iOS ignora la meta) ---------- */
 document.addEventListener('gesturestart',function(e){e.preventDefault();});
