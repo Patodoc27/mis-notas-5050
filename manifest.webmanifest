@@ -1,7 +1,7 @@
 {
   "name": "Mis notas · 5° TM · Colegio 5050",
   "short_name": "Mis notas 5050",
-  "description": "Consulta de notas del 3er trimestre · 5° año turno mañana · Colegio N° 5050, Vaqueros",
+  "description": "Consulta de notas del 3er trimestre · 5° año turno mañana · Colegio N°5050, Vaqueros",
   "start_url": "index.html",
   "scope": "./",
   "display": "standalone",
