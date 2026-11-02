@@ -52,6 +52,7 @@ body{
   padding:7px 11px;border-radius:11px;background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.4);
   color:#fff;font-family:inherit;font-size:11px;font-weight:600;letter-spacing:.2px;cursor:pointer;
 }
+.btn-full,.btn-mus{padding:8px}
 .btn-full svg,.btn-mus svg{width:15px;height:15px;flex-shrink:0}
 .sup-act .btn-full:active,.sup-act .btn-mus:active{background:rgba(255,255,255,.3)}
 .btn-mus.en-notas{margin-left:auto}
@@ -67,8 +68,8 @@ body{
   background:#fff;border:1px solid var(--borde);border-radius:20px;padding:16px 16px;
   box-shadow:0 10px 26px -16px rgba(15,60,90,.25);
 }
-.card h2{font-family:'Baloo 2',cursive;font-size:19px;color:var(--turq4);margin-bottom:3px}
-.card .explica{font-size:13px;color:var(--gris);line-height:1.5;margin-bottom:12px}
+.card h2{font-family:'Baloo 2',cursive;font-size:19px;color:var(--turq4);margin-bottom:3px;text-align:center}
+.card .explica{font-size:13px;color:var(--gris);line-height:1.5;margin-bottom:12px;text-align:center}
 .campo{position:relative;margin-bottom:10px}
 .campo input{
   width:100%;padding:15px 46px 15px 16px;font-size:16.5px;font-family:inherit;color:var(--negro);
@@ -213,12 +214,10 @@ body{
         <button class="btn-mus" aria-label="Silenciar música">
           <svg class="mus-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
           <svg class="mus-off" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg>
-          <span>Música</span>
         </button>
         <button class="btn-full" aria-label="Activar pantalla completa">
           <svg class="fs-abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
           <svg class="fs-cerrar" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>
-          <span class="fs-txt">Pantalla completa</span>
         </button>
       </div>
       <img class="escudo" src="assets/escudo-app.png" alt="Escudo Colegio N°5050">
@@ -258,12 +257,10 @@ body{
       <button class="btn-mus en-notas" aria-label="Silenciar música">
         <svg class="mus-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
         <svg class="mus-off" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg>
-        <span>Música</span>
       </button>
       <button class="btn-full en-notas" aria-label="Activar pantalla completa">
         <svg class="fs-abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
         <svg class="fs-cerrar" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>
-        <span class="fs-txt">Pantalla completa</span>
       </button>
     </div>
 
@@ -685,7 +682,6 @@ $('btn-salir').addEventListener('click',function(){
       var b=btns[i];
       b.querySelector('.fs-abrir').style.display=on?'none':'block';
       b.querySelector('.fs-cerrar').style.display=on?'block':'none';
-      b.querySelector('.fs-txt').textContent=on?'Salir':'Pantalla completa';
       b.setAttribute('aria-label',on?'Salir de pantalla completa':'Activar pantalla completa');
     }
   }
