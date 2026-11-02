@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Mis notas · 5° TM · Colegio 5050</title>
 <meta name="description" content="Consultá tus notas del 3er trimestre · 5° año turno mañana · Colegio N° 5050, Vaqueros">
 <meta name="theme-color" content="#0891b2">
@@ -23,7 +23,7 @@
   --ok:#0d9488; --warn:#b45309; --warnbg:#fef3c7; --alerta:#b91c1c; --alertabg:#fee2e2;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{height:100%}
+html{height:100%;touch-action:manipulation}
 body{
   min-height:100vh;font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--negro);
   background:
@@ -607,6 +607,11 @@ $('btn-salir').addEventListener('click',function(){
   ALUMNO=null;$('nombre').value='';limpiaErr();ir('p-inicio');
   setTimeout(function(){$('nombre').focus();},250);
 });
+
+/* ---------- pantalla fija: bloquear zoom por gestos (iOS ignora la meta) ---------- */
+document.addEventListener('gesturestart',function(e){e.preventDefault();});
+document.addEventListener('gesturechange',function(e){e.preventDefault();});
+document.addEventListener('gestureend',function(e){e.preventDefault();});
 
 /* ---------- PWA ---------- */
 if('serviceWorker' in navigator){
