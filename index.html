@@ -182,7 +182,15 @@ body{
 .final .tt{font-size:15px;font-weight:700}
 .final .td{font-size:12px;color:#bfdbfe;margin-top:3px;line-height:1.45}
 .trimestre.prov{background:linear-gradient(120deg,#64748b,#475569);box-shadow:0 10px 22px -14px rgba(51,65,85,.5)}
-.trimestre.prov .tn{font-size:30px}
+.trimestre.prov .tn{font-size:28px}
+/* el recuadro del número nunca se achica ni parte el número (7,32 en celular) */
+.trimestre .tn,.final .tn{flex-shrink:0;white-space:nowrap;line-height:1.15;min-width:72px;padding:8px 10px}
+.trimestre > div:last-child,.final > div:last-child{min-width:0;flex:1}
+@media (max-width:400px){
+  .trimestre,.final{gap:12px;padding:16px 14px}
+  .trimestre .tn,.final .tn{font-size:32px;min-width:64px}
+  .trimestre.prov .tn{font-size:24px}
+}
 
 .faltan-lista{list-style:none}
 .faltan-lista li{

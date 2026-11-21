@@ -2,7 +2,7 @@
    Estrategia red-primero: siempre intenta bajar la versión nueva y,
    si no hay conexión, cae en la copia guardada. Así los cambios se ven
    apenas se publican, sin quedar una versión vieja pegada. */
-var CACHE = 'notas5050-v7';
+var CACHE = 'notas5050-v8';
 var SHELL = [
   'index.html',
   'manifest.webmanifest',
