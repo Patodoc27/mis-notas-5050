@@ -171,15 +171,18 @@ body{
 }
 .rana-btn:active{transform:scale(.98)}
 .rana-btn svg{width:20px;height:20px}
-.rana-casillero{
-  display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px 14px;border-radius:14px;
-  background:#f8fafc;border:2px dashed #cbd5e1;
+/* ---------- nota final (rojo) ---------- */
+.final{
+  margin-top:12px;background:linear-gradient(120deg,#991b1b,#dc2626);border-radius:18px;color:#fff;
+  padding:18px;display:flex;align-items:center;gap:16px;box-shadow:0 12px 26px -14px rgba(153,27,27,.6);
 }
-.rana-casillero .info{flex:1}
-.rana-casillero .nombre{font-size:14px;font-weight:600}
-.rana-casillero .estado{font-size:11.5px;color:var(--gris2);margin-top:2px}
-.rana-casillero.ok{background:#f0fdf4;border:2px solid #86efac}
-.rana-casillero.ok .nota{color:#166534;background:#dcfce7;border-color:#86efac}
+.final .tn{font-family:'Baloo 2',cursive;font-size:40px;font-weight:800;min-width:62px;text-align:center;
+  background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.4);border-radius:14px;padding:6px 10px}
+.final.pend .tn{border-style:dashed;color:rgba(255,255,255,.75)}
+.final .tt{font-size:15px;font-weight:700}
+.final .td{font-size:12px;color:#fecaca;margin-top:3px;line-height:1.45}
+.trimestre.prov{background:linear-gradient(120deg,#64748b,#475569);box-shadow:0 10px 22px -14px rgba(51,65,85,.5)}
+.trimestre.prov .tn{font-size:30px}
 
 .faltan-lista{list-style:none}
 .faltan-lista li{
@@ -401,12 +404,11 @@ var PROVISORIAS = {
   'Vera Martina Araceli':'6,90',
   'Villada Daniel Alejandro':'7,84'
 };
-/* Nota con redondeo (desafío de la rana: 100 puntos).
-   Se completa a mano cuando el estudiante llega a los 100 puntos,
-   p. ej.: 'Acosta Kyara Anabel':'8'.
-   También se lee de la planilla si hay una columna cuyo título
-   contenga "redondeo". */
-var REDONDEOS = {
+/* Nota final del 3er trimestre (bloque rojo).
+   Se lee de la planilla: columna cuyo título contenga "final"
+   (p. ej. "NOTA FINAL 3° TRIMESTRE"). Como respaldo, se puede
+   cargar acá: 'Acosta Kyara Anabel':'8'. */
+var FINALES = {
 };
 
 function $(id){return document.getElementById(id);}
@@ -473,7 +475,7 @@ function esObs(l){var n=norm(l);return n.indexOf('observac')>=0;}
 function esTrim(l){var n=norm(l);return (n.indexOf('trimestre')>=0||n.indexOf('termino')>=0)&&!esObs(l);}
 function esNombre(l){var n=norm(l);return n.indexOf('apellido')>=0&&n.indexOf('nombre')>=0;}
 function esVacia(l){return norm(l)==='';}
-function esRedondeo(l){return norm(l).indexOf('redonde')>=0;}
+function esFinal(l){var n=norm(l);return n.indexOf('final')>=0||n.indexOf('redonde')>=0;}
 /* peso de cada actividad en el algoritmo del 3er trimestre */
 function pesoAct(l){
   var n=norm(l);
@@ -528,7 +530,7 @@ function armarModelo(d){
     if(i===NAME_COL)continue;
     if(esObs(lab))continue;             /* observaciones no van */
     if(esVacia(lab))continue;
-    if(esRedondeo(lab)){RED_COL=i;continue;}
+    if(esFinal(lab)){RED_COL=i;continue;}
     if(esTrim(lab)){TRIM_COL=i;continue;}
     if(i===0)continue;                  /* columna de números */
     ACT_COLS.push(i);
@@ -709,28 +711,35 @@ function pintar(me){
     trim.className='trimestre pend';
     trim.innerHTML='<div class="tn">—</div><div><div class="tt">Nota provisoria · 3er trimestre</div><div class="td">Todavía no hay nota cargada. Cuando el docente la suba, aparece acá.</div></div>';
   }else{
-    trim.innerHTML='<div class="tn">'+tnota+'</div><div><div class="tt">Nota provisoria · 3er trimestre</div><div class="td">Promedio ponderado de todas las actividades del trimestre.</div></div>';
+    trim.className='trimestre prov';
+    trim.innerHTML='<div class="tn">'+tnota+'</div><div><div class="tt">Nota provisoria · 3er trimestre</div><div class="td">Promedio ponderado de tus actividades. Todavía no es la nota final.</div></div>';
   }
   tb.appendChild(trim);
+
+  var fin=buscarEnMapa(FINALES,me.nombre);
+  if(fin==null&&RED_COL>=0)fin=fmtNota(celdaTexto(celdas[RED_COL]));
 
   /* desafío de la rana */
   if(tn!=null){
     var meta=notaRedondeada(tn);
-    var red=buscarEnMapa(REDONDEOS,me.nombre);
-    if(red==null&&RED_COL>=0)red=fmtNota(celdaTexto(celdas[RED_COL]));
     var rana=document.createElement('div');rana.className='rana';
     rana.innerHTML=
       '<div class="rana-top"><div class="rana-ico">🐸</div><div class="rana-tt">Desafío de la rana: redondeá tu nota para arriba</div></div>'+
-      '<p class="rana-td">Sumá <b>100 puntos</b> en el juego Salto de la Rana y tu nota provisoria se redondea para arriba: con <b>'+tnota+'</b> pasás a <b>'+meta+'</b>.</p>'+
+      '<p class="rana-td">Sumá <b>100 puntos</b> en el juego Salto de la Rana y tu nota final sube: con <b>'+tnota+'</b> pasás a <b>'+meta+'</b>.</p>'+
       '<a class="rana-btn" href="'+RANA_URL+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>Jugar a Salto de la Rana</a>';
-    var cas=document.createElement('div');
-    cas.className=red==null?'rana-casillero':'rana-casillero ok';
-    cas.innerHTML='<div class="info"><div class="nombre">Nota con redondeo</div><div class="estado"></div></div><div class="nota'+(red==null?' vacia':'')+'"></div>';
-    cas.querySelector('.estado').textContent=red==null?'Se completa cuando llegues a los 100 puntos':'¡Lograste los 100 puntos!';
-    cas.querySelector('.nota').textContent=red==null?'—':red;
-    rana.appendChild(cas);
     tb.appendChild(rana);
   }
+
+  /* nota final del trimestre */
+  var nf=document.createElement('div');
+  nf.className=fin==null?'final pend':'final';
+  nf.innerHTML='<div class="tn"></div><div><div class="tt">Nota final · 3er trimestre</div><div class="td"></div></div>';
+  nf.querySelector('.tn').textContent=fin==null?'—':fin;
+  nf.querySelector('.td').textContent=fin==null
+    ?'Todavía no está cerrada. Hacé el desafío de la rana antes de que el docente la cargue.'
+    :'Nota definitiva del trimestre cargada por el docente.';
+  tb.appendChild(nf);
+  if(fin!=null)tnota=fin;
   /* faltan */
   var fb=$('faltan');fb.innerHTML='';
   if(falta.length){
