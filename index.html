@@ -132,6 +132,8 @@ body{
 .act .info{flex:1;min-width:0}
 .act .nombre{font-size:14.5px;font-weight:600;line-height:1.3}
 .act .estado{font-size:11.5px;color:var(--gris2);margin-top:2px}
+.peso{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;font-size:10.5px;font-weight:700;
+  color:var(--azul2);background:var(--cielo);border:1px solid #bfdbfe;vertical-align:1px;white-space:nowrap}
 .nota{
   font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;min-width:46px;text-align:center;padding:5px 8px;
   border-radius:11px;color:var(--turq4);background:var(--hielo);border:1.5px solid #a5f3fc;
@@ -150,6 +152,34 @@ body{
 .trimestre .tt{font-size:15px;font-weight:700}
 .trimestre .td{font-size:12px;color:#bfdbfe;margin-top:3px;line-height:1.45}
 .trimestre.pend .tn{font-size:14px;font-family:'Inter';font-weight:600}
+
+/* ---------- desafío de la rana ---------- */
+.rana{
+  margin-top:12px;background:#fff;border:2px solid #86efac;border-radius:18px;padding:16px;
+  box-shadow:0 10px 24px -16px rgba(22,101,52,.45);
+}
+.rana-top{display:flex;align-items:center;gap:12px}
+.rana-ico{width:44px;height:44px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(140deg,#dcfce7,#bbf7d0);font-size:26px;line-height:1}
+.rana-tt{font-family:'Baloo 2',cursive;font-size:17px;font-weight:700;color:#166534;line-height:1.2}
+.rana-td{font-size:13px;color:var(--gris);line-height:1.5;margin-top:10px}
+.rana-td b{color:#166534}
+.rana-btn{
+  display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:12px;padding:13px;
+  font-family:'Baloo 2',cursive;font-size:16.5px;font-weight:700;color:#fff;text-decoration:none;
+  background:linear-gradient(120deg,#16a34a,#0d9488);border-radius:14px;box-shadow:0 8px 18px -8px rgba(22,163,74,.55);
+}
+.rana-btn:active{transform:scale(.98)}
+.rana-btn svg{width:20px;height:20px}
+.rana-casillero{
+  display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px 14px;border-radius:14px;
+  background:#f8fafc;border:2px dashed #cbd5e1;
+}
+.rana-casillero .info{flex:1}
+.rana-casillero .nombre{font-size:14px;font-weight:600}
+.rana-casillero .estado{font-size:11.5px;color:var(--gris2);margin-top:2px}
+.rana-casillero.ok{background:#f0fdf4;border:2px solid #86efac}
+.rana-casillero.ok .nota{color:#166534;background:#dcfce7;border-color:#86efac}
 
 .faltan-lista{list-style:none}
 .faltan-lista li{
@@ -324,6 +354,60 @@ body{
    ========================================================= */
 var SHEET_ID = '1qpX0-H2cYtXMfKPkPed3b-vExQR0-Pa0uhseydH-zx0';
 var SIN_NOTA = 'Sin nota';
+var RANA_URL = 'https://salto-de-la-rana-ia.vercel.app';
+
+/* ---------- nota provisoria del 3er trimestre ----------
+   Pesos: participación oral 5% · trabajo escrito en clase 5% ·
+   evaluación o recuperatorio (la más alta) 30% · cuestionario virtual 15% ·
+   Pasapalabra 15% · campaña "Desconectados" 15% ·
+   mejor desempeño en actividades virtuales 5% · muestra anual 10%. */
+var PROVISORIAS = {
+  'Acosta Kyara Anabel':'7,32',
+  'Alegre Jorge Emanuel':'7,75',
+  'Arroyo Iris Dalila':'7,26',
+  'Avalos Villafañe Delfina Gisel':'6,16',
+  'Calpanchay Mia Carla Daniela':'8,26',
+  'Catan Denis Alan':'7,68',
+  'Colque Renfijes Leonardo Gabriel':'7,58',
+  'Condorí Tomás Bautista':'7,95',
+  'Cuellar Melanie Ailen':'5,32',
+  'Daza Dylan Ezequiel':'7,00',
+  'Espinosa Maximiliano Daniel':'5,32',
+  'Farías Justiniano Andrés Antonio':'7,42',
+  'Fernandez Carrizo Lui Gabriel':'5,21',
+  'Flores Zarza David Emanuel':'9,58',
+  'Gimenez Alice Caterina':'9,00',
+  'Gimenez Eunice Pilar':'9,35',
+  'Gimenez Pablo Mateo':'6,68',
+  'Guaymás Mauro Ezequiel':'9,16',
+  'Gutierrez Lucas Gabriel':'5,74',
+  'Lamas Kiara Luciana':'8,63',
+  'Maidana Romina Anahí':'6,47',
+  'Marquez Maraz Osvaldo Emilio':'8,26',
+  'Miranda Milagros Eliana Mabel':'7,90',
+  'Parrado Morales Jazmín Raquel':'5,11',
+  'Perez Micaela del Milagro':'7,84',
+  'Quintana Jennifer Antonella':'9,05',
+  'Quipildor Abril Agustina':'8,37',
+  'Ramirez Gael':'7,79',
+  'Ramirez Orellana Samuel Emiliano':'3,47',
+  'Rodriguez Graneros Karen Jocelyn':'8,25',
+  'Ruiz Verónica Olga':'5,70',
+  'Serrano Alan Benjamín':'7,35',
+  'Soria Farías Trinidad Araceli':'6,89',
+  'Sumbay García Victoria Camila':'8,00',
+  'Tolaba Garnica Jonathan Dylan':'6,37',
+  'Vargas Máximo José':'2,11',
+  'Vera Martina Araceli':'6,90',
+  'Villada Daniel Alejandro':'7,84'
+};
+/* Nota con redondeo (desafío de la rana: 100 puntos).
+   Se completa a mano cuando el estudiante llega a los 100 puntos,
+   p. ej.: 'Acosta Kyara Anabel':'8'.
+   También se lee de la planilla si hay una columna cuyo título
+   contenga "redondeo". */
+var REDONDEOS = {
+};
 
 function $(id){return document.getElementById(id);}
 
@@ -389,13 +473,51 @@ function esObs(l){var n=norm(l);return n.indexOf('observac')>=0;}
 function esTrim(l){var n=norm(l);return (n.indexOf('trimestre')>=0||n.indexOf('termino')>=0)&&!esObs(l);}
 function esNombre(l){var n=norm(l);return n.indexOf('apellido')>=0&&n.indexOf('nombre')>=0;}
 function esVacia(l){return norm(l)==='';}
+function esRedondeo(l){return norm(l).indexOf('redonde')>=0;}
+/* peso de cada actividad en el algoritmo del 3er trimestre */
+function pesoAct(l){
+  var n=norm(l);
+  if(n.indexOf('participacion')>=0)return '5%';
+  if(n.indexOf('trabajo escrito')>=0)return '5%';
+  if(n.indexOf('recuperatorio')>=0)return '30% (cuenta la más alta)';
+  if(n.indexOf('evaluacion')>=0)return '30% (cuenta la más alta)';
+  if(n.indexOf('cuestionario')>=0)return '15%';
+  if(n.indexOf('pasapalabra')>=0)return '15%';
+  if(n.indexOf('desconectados')>=0||n.indexOf('campana')>=0)return '15%';
+  if(n.indexOf('mejor desempeno')>=0)return '5%';
+  if(n.indexOf('muestra')>=0)return '10%';
+  return null;
+}
 
-var DATA=null, FILAS=[], COLS=[], NAME_COL=-1, TRIM_COL=-1, ACT_COLS=[];
+/* busca un nombre en un diccionario {nombre:valor} de forma tolerante */
+function buscarEnMapa(mapa,nombre){
+  var nt=toks(nombre),k,best=null,bestHits=0;
+  for(k in mapa){
+    if(!mapa.hasOwnProperty(k))continue;
+    if(norm(k)===norm(nombre))return mapa[k];
+  }
+  for(k in mapa){
+    if(!mapa.hasOwnProperty(k))continue;
+    var kt=toks(k),hits=0;
+    for(var i=0;i<kt.length;i++){if(tokMatch(kt[i],nt))hits++;}
+    var todos=true;
+    for(i=0;i<nt.length;i++){if(!tokMatch(nt[i],kt)){todos=false;break;}}
+    if((hits===kt.length||todos)&&hits>bestHits){best=mapa[k];bestHits=hits;}
+  }
+  return best;
+}
+/* redondeo hacia arriba: siempre al entero siguiente (7,32 → 8; 7,00 → 8), tope 10 */
+function notaRedondeada(n){
+  if(n==null)return null;
+  return Math.min(10,Math.floor(n)+1);
+}
+
+var DATA=null, FILAS=[], COLS=[], NAME_COL=-1, TRIM_COL=-1, RED_COL=-1, ACT_COLS=[];
 
 function armarModelo(d){
   var t=d&&d.table;if(!t)throw new Error('empty');
   COLS=t.cols||[];FILAS=t.rows||[];
-  NAME_COL=-1;TRIM_COL=-1;ACT_COLS=[];
+  NAME_COL=-1;TRIM_COL=-1;RED_COL=-1;ACT_COLS=[];
   for(var i=0;i<COLS.length;i++){
     var lab=(COLS[i]&&COLS[i].label)||'';
     if(esNombre(lab))NAME_COL=i;
@@ -406,6 +528,7 @@ function armarModelo(d){
     if(i===NAME_COL)continue;
     if(esObs(lab))continue;             /* observaciones no van */
     if(esVacia(lab))continue;
+    if(esRedondeo(lab)){RED_COL=i;continue;}
     if(esTrim(lab)){TRIM_COL=i;continue;}
     if(i===0)continue;                  /* columna de números */
     ACT_COLS.push(i);
@@ -567,6 +690,8 @@ function pintar(me){
       st.textContent=(n!=null&&n<=5)?'Nota cargada — a repasar':'Nota cargada';
       notas++;
     }
+    var peso=pesoAct(lab);
+    if(peso){var pp=document.createElement('span');pp.className='peso';pp.textContent='Peso '+peso;nm.appendChild(pp);}
     info.appendChild(nm);info.appendChild(st);
     row.appendChild(ico);row.appendChild(info);row.appendChild(chip);
     acts.appendChild(row);
@@ -577,16 +702,35 @@ function pintar(me){
   h3.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.26L21.5 9.3l-4.75 4.4 1.25 6.55L12 17.1l-6 3.15 1.25-6.55L2.5 9.3l6.6-1.04Z"/></svg>Nota del trimestre';
   tb.appendChild(h3);
   var trim=document.createElement('div');trim.className='trimestre';
-  var tnota=TRIM_COL>=0?fmtNota(celdaTexto(celdas[TRIM_COL])):null;
+  var tnota=buscarEnMapa(PROVISORIAS,me.nombre);
+  if(tnota==null&&TRIM_COL>=0)tnota=fmtNota(celdaTexto(celdas[TRIM_COL]));
   var tn=numNota(tnota);
   if(tnota==null){
     trim.className='trimestre pend';
-    trim.innerHTML='<div class="tn">—</div><div><div class="tt">3er trimestre</div><div class="td">Todavía no hay nota final cargada. Cuando el docente la suba, aparece acá.</div></div>';
+    trim.innerHTML='<div class="tn">—</div><div><div class="tt">Nota provisoria · 3er trimestre</div><div class="td">Todavía no hay nota cargada. Cuando el docente la suba, aparece acá.</div></div>';
   }else{
-    var extra=(tn!=null&&tn<=5)?'Está por debajo de la aprobación: aprovechá el recuperatorio.':'';
-    trim.innerHTML='<div class="tn">'+tnota+'</div><div><div class="tt">3er trimestre</div><div class="td">'+(extra||'Nota del trimestre cargada por el docente.')+'</div></div>';
+    trim.innerHTML='<div class="tn">'+tnota+'</div><div><div class="tt">Nota provisoria · 3er trimestre</div><div class="td">Promedio ponderado de todas las actividades del trimestre.</div></div>';
   }
   tb.appendChild(trim);
+
+  /* desafío de la rana */
+  if(tn!=null){
+    var meta=notaRedondeada(tn);
+    var red=buscarEnMapa(REDONDEOS,me.nombre);
+    if(red==null&&RED_COL>=0)red=fmtNota(celdaTexto(celdas[RED_COL]));
+    var rana=document.createElement('div');rana.className='rana';
+    rana.innerHTML=
+      '<div class="rana-top"><div class="rana-ico">🐸</div><div class="rana-tt">Desafío de la rana: redondeá tu nota para arriba</div></div>'+
+      '<p class="rana-td">Sumá <b>100 puntos</b> en el juego Salto de la Rana y tu nota provisoria se redondea para arriba: con <b>'+tnota+'</b> pasás a <b>'+meta+'</b>.</p>'+
+      '<a class="rana-btn" href="'+RANA_URL+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>Jugar a Salto de la Rana</a>';
+    var cas=document.createElement('div');
+    cas.className=red==null?'rana-casillero':'rana-casillero ok';
+    cas.innerHTML='<div class="info"><div class="nombre">Nota con redondeo</div><div class="estado"></div></div><div class="nota'+(red==null?' vacia':'')+'"></div>';
+    cas.querySelector('.estado').textContent=red==null?'Se completa cuando llegues a los 100 puntos':'¡Lograste los 100 puntos!';
+    cas.querySelector('.nota').textContent=red==null?'—':red;
+    rana.appendChild(cas);
+    tb.appendChild(rana);
+  }
   /* faltan */
   var fb=$('faltan');fb.innerHTML='';
   if(falta.length){
