@@ -736,8 +736,8 @@ function pintar(me){
   nf.innerHTML='<div class="tn"></div><div><div class="tt">Nota final · 3er trimestre</div><div class="td"></div></div>';
   nf.querySelector('.tn').textContent=fin==null?'—':fin;
   nf.querySelector('.td').textContent=fin==null
-    ?'Todavía no está cerrada. Hacé el desafío de la rana antes de que el docente la cargue.'
-    :'Nota definitiva del trimestre cargada por el docente.';
+    ?'Todavía no está cerrada. Si llegás a 100 puntos en la rana, se carga sola con el redondeo.'
+    :'Nota final del trimestre con el redondeo de la rana.';
   tb.appendChild(nf);
   if(fin!=null)tnota=fin;
   /* faltan */
