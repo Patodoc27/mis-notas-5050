@@ -193,6 +193,26 @@ body{
   .rana-btn{box-shadow:0 0 20px 5px rgba(74,222,128,.75)}
 }
 
+
+/* ---------- festejo: video para quienes ya tienen nota final ---------- */
+.festejo{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;padding:18px;background:rgba(6,24,58,.92);backdrop-filter:blur(4px)}
+.festejo.on{display:flex;animation:festejoIn .35s ease-out}
+@keyframes festejoIn{from{opacity:0}to{opacity:1}}
+.festejo-tt{font-family:'Baloo 2',cursive;font-size:26px;font-weight:800;color:#fff;text-align:center;line-height:1.15;
+  text-shadow:0 0 18px rgba(74,222,128,.7)}
+.festejo-nota{font-size:15px;color:#bbf7d0;text-align:center}
+.festejo-nota b{font-family:'Baloo 2',cursive;font-size:28px;color:#fff;margin-left:4px;vertical-align:-3px}
+.festejo-video{position:relative;width:100%;max-width:720px;border-radius:18px;overflow:hidden;
+  box-shadow:0 0 0 3px rgba(134,239,172,.7),0 0 34px 8px rgba(74,222,128,.55)}
+.festejo-video video{display:block;width:100%;height:auto;background:#0b3b2e}
+.festejo-sonido{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:none;align-items:center;gap:8px;
+  padding:9px 16px;border:0;border-radius:999px;font:700 14px 'Inter',sans-serif;color:#14532d;background:#fff;
+  box-shadow:0 6px 16px -6px rgba(0,0,0,.5);cursor:pointer}
+.festejo-sonido.on{display:flex}
+.festejo-btn{padding:13px 26px;border:0;border-radius:14px;cursor:pointer;font-family:'Baloo 2',cursive;font-size:17px;font-weight:700;
+  color:#fff;background:linear-gradient(120deg,#16a34a,#0d9488);box-shadow:0 8px 18px -8px rgba(22,163,74,.6)}
+
 /* ---------- nota final (azul) ---------- */
 .final{
   margin-top:12px;background:linear-gradient(120deg,var(--azul3),var(--azul2));border-radius:18px;color:#fff;
@@ -376,6 +396,15 @@ body{
   </section>
 </div>
 
+<div class="festejo" id="festejo" role="dialog" aria-modal="true" aria-labelledby="festejo-tt">
+  <div class="festejo-tt" id="festejo-tt">¡Cerraste el 3er trimestre!</div>
+  <div class="festejo-nota">Tu nota final <b id="festejo-n"></b></div>
+  <div class="festejo-video">
+    <video id="festejo-v" src="assets/festejo-rana.mp4" poster="assets/festejo-rana.jpg" playsinline preload="none"></video>
+    <button class="festejo-sonido" id="festejo-sonido" type="button">🔊 Activar sonido</button>
+  </div>
+  <button class="festejo-btn" id="festejo-cerrar" type="button">Ver mis notas</button>
+</div>
 <audio id="musica" src="assets/musica.mp3" loop preload="auto"></audio>
 
 <script>
@@ -656,8 +685,10 @@ function mostrarCandidatos(hits){
   box.classList.add('on');
 }
 
+var FESTEJO_PENDIENTE=false;
 function entrar(al){
   ALUMNO=al;
+  FESTEJO_PENDIENTE=true;
   $('saludo-nom').textContent='¡Hola, '+al.nombre+'!';
   ir('p-notas');
   cargarNotas(true);
@@ -770,6 +801,8 @@ function pintar(me){
     :'Nota final del trimestre con el redondeo de la rana.';
   tb.appendChild(nf);
   if(fin!=null)tnota=fin;
+  if(FESTEJO_PENDIENTE&&fin!=null)festejar(fin);
+  FESTEJO_PENDIENTE=false;
   /* faltan */
   var fb=$('faltan');fb.innerHTML='';
   if(falta.length){
@@ -825,6 +858,43 @@ $('btn-salir').addEventListener('click',function(){
   ALUMNO=null;$('nombre').value='';limpiaErr();ir('p-inicio');
   setTimeout(function(){$('nombre').focus();},250);
 });
+
+/* ---------- festejo: solo para quienes ya tienen nota final ---------- */
+var festejoMusica=false;
+function festejar(nota){
+  var ov=$('festejo'),v=$('festejo-v'),son=$('festejo-sonido');
+  $('festejo-n').textContent=nota;
+  var mus=document.getElementById('musica');
+  festejoMusica=!!(mus&&!mus.paused);
+  if(mus)mus.pause();
+  ov.classList.add('on');
+  son.classList.remove('on');
+  try{v.currentTime=0;}catch(e){}
+  v.muted=false;
+  var p=v.play();
+  if(p&&p.catch)p.catch(function(){
+    /* el navegador no deja arrancar con sonido: arranca sin sonido y ofrece activarlo */
+    v.muted=true;
+    var p2=v.play();if(p2&&p2.catch)p2.catch(function(){});
+    son.classList.add('on');
+  });
+  setTimeout(function(){$('festejo-cerrar').focus();},50);
+}
+function cerrarFestejo(){
+  var ov=$('festejo'),v=$('festejo-v');
+  if(!ov.classList.contains('on'))return;
+  ov.classList.remove('on');
+  try{v.pause();}catch(e){}
+  var mus=document.getElementById('musica');
+  if(festejoMusica&&mus){var p=mus.play();if(p&&p.catch)p.catch(function(){});}
+}
+$('festejo-cerrar').addEventListener('click',cerrarFestejo);
+$('festejo-v').addEventListener('ended',function(){setTimeout(cerrarFestejo,600);});
+$('festejo-sonido').addEventListener('click',function(){
+  var v=$('festejo-v');v.muted=false;$('festejo-sonido').classList.remove('on');
+  var p=v.play();if(p&&p.catch)p.catch(function(){});
+});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')cerrarFestejo();});
 
 /* ---------- música de fondo ---------- */
 (function(){

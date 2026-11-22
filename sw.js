@@ -2,7 +2,7 @@
    Estrategia red-primero: siempre intenta bajar la versión nueva y,
    si no hay conexión, cae en la copia guardada. Así los cambios se ven
    apenas se publican, sin quedar una versión vieja pegada. */
-var CACHE = 'notas5050-v9';
+var CACHE = 'notas5050-v10';
 var SHELL = [
   'index.html',
   'manifest.webmanifest',
@@ -38,6 +38,8 @@ self.addEventListener('fetch', function (e) {
     e.respondWith(fetch(e.request));
     return;
   }
+  /* videos: los maneja el navegador directo (pide el archivo por partes) */
+  if (url.indexOf('.mp4') >= 0) return;
   /* red primero, cache como respaldo sin conexión */
   e.respondWith(
     fetch(e.request).then(function (res) {
