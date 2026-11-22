@@ -203,9 +203,11 @@ body{
   text-shadow:0 0 18px rgba(74,222,128,.7)}
 .festejo-nota{font-size:15px;color:#bbf7d0;text-align:center}
 .festejo-nota b{font-family:'Baloo 2',cursive;font-size:28px;color:#fff;margin-left:4px;vertical-align:-3px}
-.festejo-video{position:relative;width:100%;max-width:720px;border-radius:18px;overflow:hidden;
+.festejo{gap:10px;padding:14px}
+.festejo-video{position:relative;aspect-ratio:9/16;height:calc(100vh - 190px);height:calc(100dvh - 190px);
+  max-height:1280px;max-width:100%;border-radius:18px;overflow:hidden;
   box-shadow:0 0 0 3px rgba(134,239,172,.7),0 0 34px 8px rgba(74,222,128,.55)}
-.festejo-video video{display:block;width:100%;height:auto;background:#0b3b2e}
+.festejo-video video{display:block;width:100%;height:100%;object-fit:cover;background:#0b3b2e}
 .festejo-sonido{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:none;align-items:center;gap:8px;
   padding:9px 16px;border:0;border-radius:999px;font:700 14px 'Inter',sans-serif;color:#14532d;background:#fff;
   box-shadow:0 6px 16px -6px rgba(0,0,0,.5);cursor:pointer}
@@ -860,7 +862,26 @@ $('btn-salir').addEventListener('click',function(){
 });
 
 /* ---------- festejo: solo para quienes ya tienen nota final ---------- */
-var festejoMusica=false;
+var festejoMusica=false,festejoListo=false;
+/* Los celulares solo dejan reproducir con sonido después de un toque.
+   En el primer toque (por ejemplo "Ver mis notas") se habilita el video
+   en silencio de reproducción: play y pausa inmediata. Así, cuando
+   llegan las notas, el festejo arranca solo y con sonido. */
+function habilitarFestejo(){
+  if(festejoListo)return;festejoListo=true;
+  var v=$('festejo-v');
+  try{
+    v.preload='auto';
+    v.muted=false;
+    var p=v.play();
+    v.pause();
+    if(p&&p.then)p.then(function(){if(!$('festejo').classList.contains('on')){v.pause();try{v.currentTime=0;}catch(e){}}}).catch(function(){});
+    try{v.currentTime=0;}catch(e){}
+  }catch(e){}
+}
+document.addEventListener('pointerdown',habilitarFestejo,true);
+document.addEventListener('touchend',habilitarFestejo,true);
+document.addEventListener('keydown',habilitarFestejo,true);
 function festejar(nota){
   var ov=$('festejo'),v=$('festejo-v'),son=$('festejo-sonido');
   $('festejo-n').textContent=nota;
