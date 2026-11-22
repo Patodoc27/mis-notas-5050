@@ -803,7 +803,10 @@ function pintar(me){
     :'Nota final del trimestre con el redondeo de la rana.';
   tb.appendChild(nf);
   if(fin!=null)tnota=fin;
-  if(FESTEJO_PENDIENTE&&fin!=null)festejar(fin);
+  if(FESTEJO_PENDIENTE){
+    if(fin!=null)festejar(fin);   /* la música arranca cuando se cierra el video */
+    else iniciarMusica();         /* sin video: arranca al mostrar las notas */
+  }
   FESTEJO_PENDIENTE=false;
   /* faltan */
   var fb=$('faltan');fb.innerHTML='';
@@ -862,7 +865,8 @@ $('btn-salir').addEventListener('click',function(){
 });
 
 /* ---------- festejo: solo para quienes ya tienen nota final ---------- */
-var festejoMusica=false,festejoListo=false;
+var festejoListo=false,MUSICA_SONANDO=false,MUSICA_APAGADA=false;
+var iniciarMusica=function(){}; /* la define el bloque de música de fondo */
 /* Los celulares solo dejan reproducir con sonido después de un toque.
    En el primer toque (por ejemplo "Ver mis notas") se habilita el video
    en silencio de reproducción: play y pausa inmediata. Así, cuando
@@ -870,6 +874,8 @@ var festejoMusica=false,festejoListo=false;
 function habilitarFestejo(){
   if(festejoListo)return;festejoListo=true;
   var v=$('festejo-v');
+  var m=document.getElementById('musica');
+  if(m&&m.paused){try{var pm=m.play();m.pause();if(pm&&pm.then)pm.then(function(){if(!MUSICA_SONANDO)m.pause();}).catch(function(){});}catch(e){}}
   try{
     v.preload='auto';
     v.muted=false;
@@ -886,7 +892,6 @@ function festejar(nota){
   var ov=$('festejo'),v=$('festejo-v'),son=$('festejo-sonido');
   $('festejo-n').textContent=nota;
   var mus=document.getElementById('musica');
-  festejoMusica=!!(mus&&!mus.paused);
   if(mus)mus.pause();
   ov.classList.add('on');
   son.classList.remove('on');
@@ -906,8 +911,7 @@ function cerrarFestejo(){
   if(!ov.classList.contains('on'))return;
   ov.classList.remove('on');
   try{v.pause();}catch(e){}
-  var mus=document.getElementById('musica');
-  if(festejoMusica&&mus){var p=mus.play();if(p&&p.catch)p.catch(function(){});}
+  iniciarMusica();
 }
 $('festejo-cerrar').addEventListener('click',cerrarFestejo);
 $('festejo-v').addEventListener('ended',function(){setTimeout(cerrarFestejo,600);});
@@ -930,14 +934,15 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')cerrarFestej
       btns[i].setAttribute('aria-label',off?'Activar música':'Silenciar música');
     }
   }
-  function intentar(){var p=mus.play();if(p&&p.catch)p.catch(function(){});}
-  var tocado=false;
-  function primerToque(){if(tocado)return;tocado=true;intentar();}
-  document.addEventListener('pointerdown',primerToque);
-  document.addEventListener('keydown',primerToque);
+  function intentar(){MUSICA_SONANDO=true;var p=mus.play();if(p&&p.catch)p.catch(function(){MUSICA_SONANDO=false;pinta();});}
+  /* La música ya no arranca al tocar la pantalla de inicio: arranca cuando
+     se muestran las notas o cuando se cierra el video de la rana. Si el
+     estudiante la apagó con el botón, se respeta. */
+  iniciarMusica=function(){if(!MUSICA_APAGADA&&mus.paused)intentar();};
   for(var i=0;i<btns.length;i++){
     btns[i].addEventListener('click',function(){
-      if(mus.paused)intentar();else mus.pause();
+      if(mus.paused){MUSICA_APAGADA=false;intentar();}
+      else{MUSICA_APAGADA=true;MUSICA_SONANDO=false;mus.pause();}
     });
   }
   mus.addEventListener('play',pinta);
