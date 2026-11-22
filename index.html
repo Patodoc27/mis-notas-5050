@@ -945,6 +945,30 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')cerrarFestej
       else{MUSICA_APAGADA=true;MUSICA_SONANDO=false;mus.pause();}
     });
   }
+  /* La música solo acompaña la pantalla de notas:
+     · se corta al abrir un juego o actividad (Salto de la Rana, Pasapalabra, Cuestionario),
+     · se corta si se cambia de pestaña o de app,
+     · se corta al salir con "No soy yo",
+     y vuelve sola cuando el estudiante regresa a sus notas. */
+  var pausaAuto=false;
+  function enNotas(){var s=document.getElementById('p-notas');return !!(s&&s.classList.contains('on'));}
+  function cortar(){if(!mus.paused){pausaAuto=true;MUSICA_SONANDO=false;mus.pause();}}
+  function volver(){
+    if(!pausaAuto)return;
+    if(document.hidden||!enNotas()||MUSICA_APAGADA)return;
+    var fe=document.getElementById('festejo');if(fe&&fe.classList.contains('on'))return;
+    pausaAuto=false;intentar();
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('a[target="_blank"]'):null;
+    if(a)cortar();
+  },true);
+  document.addEventListener('visibilitychange',function(){if(document.hidden)cortar();else setTimeout(volver,250);});
+  window.addEventListener('pagehide',cortar);
+  window.addEventListener('blur',function(){setTimeout(function(){if(document.hidden)cortar();},300);});
+  window.addEventListener('focus',function(){setTimeout(volver,250);});
+  var salir=document.getElementById('btn-salir');
+  if(salir)salir.addEventListener('click',function(){pausaAuto=false;MUSICA_SONANDO=false;mus.pause();});
   mus.addEventListener('play',pinta);
   mus.addEventListener('pause',pinta);
   pinta();
