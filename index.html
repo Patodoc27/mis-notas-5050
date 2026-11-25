@@ -759,8 +759,7 @@ function pintar(me){
       falta.push(lab+' — aún sin nota');
     }else if(n===0){
       chip.className='nota cero';chip.textContent='0';
-      st.textContent='Pendiente de entrega';
-      falta.push(lab+' — pendiente de entrega');
+      st.textContent='No entregado';
       notas++;
     }else{
       chip.textContent=nota;
@@ -824,7 +823,7 @@ function pintar(me){
   }else{
     var ok=document.createElement('div');ok.className='al-dia';
     ok.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
-    var sp2=document.createElement('span');sp2.textContent='¡Estás al día! Todas tus actividades ya tienen nota.';ok.appendChild(sp2);
+    var sp2=document.createElement('span');sp2.textContent='Todas tus actividades ya tienen nota cargada.';ok.appendChild(sp2);
     fb.appendChild(ok);
   }
   /* resumen */
