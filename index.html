@@ -379,7 +379,7 @@ body{
           <span class="flecha"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
         </a>
       </div>
-      <p class="apps-nota"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-5M12 8h.01"/></svg><span>«Mejor desempeño en actividades virtuales» se actualiza con los cinco mejores puntajes entre el Pasapalabra y el Cuestionario Virtual.</span></p>
+      <p class="apps-nota"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-5M12 8h.01"/></svg><span>«Mejor desempeño en actividades virtuales» lo reciben los cinco mejores del Pasapalabra, del Cuestionario Virtual y de Salto de la Rana, y suma 0,5 al promedio.</span></p>
     </div>
 
     <div id="fallo" style="display:none" class="error-msg on"></div>
@@ -471,6 +471,12 @@ var PROVISORIAS = {
    cargar acá: 'Acosta Kyara Anabel':'8'. */
 var FINALES = {
 };
+/* Estudiantes con la nota final todavía abierta (no se muestra la nota final). */
+var ABIERTOS = {
+  'Ramirez Orellana Samuel Emiliano':true,
+  'Vargas Máximo José':true,
+  'Fernandez Carrizo Luis Gabriel':true
+};
 
 function $(id){return document.getElementById(id);}
 
@@ -537,6 +543,8 @@ function esTrim(l){var n=norm(l);return (n.indexOf('trimestre')>=0||n.indexOf('t
 function esNombre(l){var n=norm(l);return n.indexOf('apellido')>=0&&n.indexOf('nombre')>=0;}
 function esVacia(l){return norm(l)==='';}
 function esFinal(l){var n=norm(l);return n.indexOf('final')>=0||n.indexOf('redonde')>=0;}
+function esProm(l){return norm(l).indexOf('promedio')>=0;}
+function esMejor(l){return norm(l).indexOf('mejor desempeno')>=0;}
 /* peso de cada actividad en el algoritmo del 3er trimestre */
 function pesoAct(l){
   var n=norm(l);
@@ -547,7 +555,7 @@ function pesoAct(l){
   if(n.indexOf('cuestionario')>=0)return '15%';
   if(n.indexOf('pasapalabra')>=0)return '15%';
   if(n.indexOf('desconectados')>=0||n.indexOf('campana')>=0)return '15%';
-  if(n.indexOf('mejor desempeno')>=0)return '5%';
+  if(n.indexOf('mejor desempeno')>=0)return '+0,5 al promedio si estás entre los 5 mejores';
   if(n.indexOf('muestra')>=0)return '10%';
   return null;
 }
@@ -575,12 +583,12 @@ function notaRedondeada(n){
   return Math.min(10,Math.floor(n)+1);
 }
 
-var DATA=null, FILAS=[], COLS=[], NAME_COL=-1, TRIM_COL=-1, RED_COL=-1, ACT_COLS=[];
+var DATA=null, FILAS=[], COLS=[], NAME_COL=-1, TRIM_COL=-1, RED_COL=-1, PROM_COL=-1, ACT_COLS=[];
 
 function armarModelo(d){
   var t=d&&d.table;if(!t)throw new Error('empty');
   COLS=t.cols||[];FILAS=t.rows||[];
-  NAME_COL=-1;TRIM_COL=-1;RED_COL=-1;ACT_COLS=[];
+  NAME_COL=-1;TRIM_COL=-1;RED_COL=-1;PROM_COL=-1;ACT_COLS=[];
   for(var i=0;i<COLS.length;i++){
     var lab=(COLS[i]&&COLS[i].label)||'';
     if(esNombre(lab))NAME_COL=i;
@@ -591,6 +599,8 @@ function armarModelo(d){
     if(i===NAME_COL)continue;
     if(esObs(lab))continue;             /* observaciones no van */
     if(esVacia(lab))continue;
+    if(esProm(lab)){PROM_COL=i;continue;}    /* columnas de promedio: no van como actividad;
+                                                 se muestra la última (promedio ponderado final) */
     if(esFinal(lab)){RED_COL=i;continue;}
     if(esTrim(lab)){TRIM_COL=i;continue;}
     if(i===0)continue;                  /* columna de números */
@@ -740,7 +750,10 @@ function pintar(me){
     var nm=document.createElement('div');nm.className='nombre';nm.textContent=lab;
     var st=document.createElement('div');st.className='estado';
     var chip=document.createElement('div');chip.className='nota';
-    if(nota==null){
+    if(esMejor(lab)&&(n===0||nota==null)){
+      chip.className='nota vacia';chip.textContent='—';
+      st.textContent='No otorgado';
+    }else if(nota==null){
       chip.className='nota vacia';chip.textContent=SIN_NOTA;
       st.textContent='Nota aún no cargada';
       falta.push(lab+' — aún sin nota');
@@ -756,7 +769,7 @@ function pintar(me){
       notas++;
     }
     var peso=pesoAct(lab);
-    if(peso){var pp=document.createElement('span');pp.className='peso';pp.textContent='Peso '+peso;nm.appendChild(pp);}
+    if(peso){var pp=document.createElement('span');pp.className='peso';pp.textContent=(peso.charAt(0)==='+'?'':'Peso ')+peso;nm.appendChild(pp);}
     info.appendChild(nm);info.appendChild(st);
     row.appendChild(ico);row.appendChild(info);row.appendChild(chip);
     acts.appendChild(row);
@@ -767,31 +780,20 @@ function pintar(me){
   h3.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.26L21.5 9.3l-4.75 4.4 1.25 6.55L12 17.1l-6 3.15 1.25-6.55L2.5 9.3l6.6-1.04Z"/></svg>Nota del trimestre';
   tb.appendChild(h3);
   var trim=document.createElement('div');trim.className='trimestre';
-  var tnota=buscarEnMapa(PROVISORIAS,me.nombre);
-  if(tnota==null&&TRIM_COL>=0)tnota=fmtNota(celdaTexto(celdas[TRIM_COL]));
+  var tnota=PROM_COL>=0?fmtNota(celdaTexto(celdas[PROM_COL])):null;
   var tn=numNota(tnota);
   if(tnota==null){
     trim.className='trimestre pend';
-    trim.innerHTML='<div class="tn">—</div><div><div class="tt">Nota provisoria · 3er trimestre</div><div class="td">Todavía no hay nota cargada. Cuando el docente la suba, aparece acá.</div></div>';
+    trim.innerHTML='<div class="tn">—</div><div><div class="tt">Promedio · 3er trimestre</div><div class="td">Todavía no hay nota cargada. Cuando el docente la suba, aparece acá.</div></div>';
   }else{
     trim.className='trimestre prov';
-    trim.innerHTML='<div class="tn">'+tnota+'</div><div><div class="tt">Nota provisoria · 3er trimestre</div><div class="td">Promedio ponderado de tus actividades. Todavía no es la nota final.</div></div>';
+    trim.innerHTML='<div class="tn">'+tnota+'</div><div><div class="tt">Promedio · 3er trimestre</div><div class="td">Promedio ponderado de tus actividades, con el medio punto de mejor desempeño si te corresponde.</div></div>';
   }
   tb.appendChild(trim);
 
-  var fin=buscarEnMapa(FINALES,me.nombre);
-  if(fin==null&&RED_COL>=0)fin=fmtNota(celdaTexto(celdas[RED_COL]));
-
-  /* desafío de la rana */
-  if(tn!=null){
-    var meta=notaRedondeada(tn);
-    var rana=document.createElement('div');rana.className='rana';
-    rana.innerHTML=
-      '<div class="rana-top"><div class="rana-ico">🐸</div><div class="rana-tt">Desafío de la rana: redondeá tu nota para arriba</div></div>'+
-      '<p class="rana-td">Sumá <b>100 puntos</b> en el juego Salto de la Rana y tu nota final sube: con <b>'+tnota+'</b> pasás a <b>'+meta+'</b>.</p>'+
-      '<a class="rana-btn" href="'+RANA_URL+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>Jugar a Salto de la Rana</a>';
-    tb.appendChild(rana);
-  }
+  var abierta=!!buscarEnMapa(ABIERTOS,me.nombre);
+  var fin=abierta?null:buscarEnMapa(FINALES,me.nombre);
+  if(fin==null&&!abierta&&TRIM_COL>=0)fin=fmtNota(celdaTexto(celdas[TRIM_COL]));
 
   /* nota final del trimestre */
   var nf=document.createElement('div');
@@ -799,8 +801,8 @@ function pintar(me){
   nf.innerHTML='<div class="tn"></div><div><div class="tt">Nota final · 3er trimestre</div><div class="td"></div></div>';
   nf.querySelector('.tn').textContent=fin==null?'—':fin;
   nf.querySelector('.td').textContent=fin==null
-    ?'Todavía no está cerrada. Si llegás a 100 puntos en la rana, se carga sola con el redondeo.'
-    :'Nota final del trimestre con el redondeo de la rana.';
+    ?'Todavía no está cerrada. Tu docente te va a indicar cómo completarla.'
+    :'Nota final del 3er trimestre.';
   tb.appendChild(nf);
   if(fin!=null)tnota=fin;
   if(FESTEJO_PENDIENTE){
