@@ -753,6 +753,9 @@ function pintar(me){
     if(esMejor(lab)&&(n===0||nota==null)){
       chip.className='nota vacia';chip.textContent='—';
       st.textContent='No otorgado';
+    }else if(norm(lab).indexOf('recuperatorio')>=0&&(nota==null||n==null)){
+      chip.className='nota vacia';chip.textContent='—';
+      st.textContent='Sin recuperatorio';
     }else if(nota==null){
       chip.className='nota vacia';chip.textContent=SIN_NOTA;
       st.textContent='Nota aún no cargada';
